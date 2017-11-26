@@ -1,28 +1,66 @@
 {
   "private": true,
-  "name": "{{ name }}",
+  "name": "{{name}}",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
-    "build": "preact build",
-    "serve": "preact build && preact serve",
+    "preanalyze": "yarn build",
+    "analyze": "webpack-bundle-analyzer ./build/stats.json",
+    "build": "preact build --json --no-prerender",
+    "postbuild": "mv stats.json build && del-cli './src/**/*.css'",
+    "predeploy": "yarn build",
+    "deploy": "netlify deploy -p build",
     "dev": "preact watch",
-    "lint": "eslint src"
+    "lint": "xo",
+    "lint:fix": "eslint src --fix",
+    "preserve": "yarn build",
+    "serve": "preact serve",
+    "start": "if-env NODE_ENV=production && yarn serve || yarn dev",
+    "test": "yarn lint",
+    "precommit": "lint-staged"
   },
-  "eslintConfig": {
-    "extends": "eslint-config-synacor"
+  "xo": {
+    "parser": "babel-eslint",
+    "extends": ["prettier", "prettier/react", "xo-preact", "plugin:react/recommended"],
+    "env": ["browser", "node"],
+    "rules": {
+      "linebreak-style": 0,
+      "react/display-name": 0,
+      "react/prop-types": 0,
+      "react/jsx-filename-extension": 0,
+      "react/jsx-handler-names": 0,
+      "react/jsx-space-before-closing": 0
+    },
+    "space": 2,
+    "ignores": ["build/*"]
   },
-  "eslintIgnore": ["build/*"],
+  "lint-staged": {
+    "*.js": ["prettier --write --single-quote --print-width=100 --trailing-comma=all", "xo", "git add"]
+  },
   "devDependencies": {
-    "eslint": "^4.5.0",
-    "eslint-config-synacor": "^1.1.0",
+    "babel-eslint": "^8.0.2",
+    "del-cli": "^1.1.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-config-xo-preact": "^1.0.0",
+    "eslint-plugin-react": "^7.4.0",
+    "husky": "^0.14.3",
     "if-env": "^1.0.0",
-    "preact-cli": "^2.0.0"
+    "lint-staged": "^5.0.0",
+    "netlify-cli": "^1.2.2",
+    "preact-cli": "^2.0.0",
+    "preact-cli-plugin-netlify": "^1.0.1",
+    "prettier": "^1.8.2",
+    "typescript": "^2.6.1",
+    "typescript-styled-plugin": "^0.2.0",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "xo": "^0.18.2"
   },
   "dependencies": {
+    "babel-plugin-emotion": "^8.0.11",
+    "emotion": "^8.0.11",
     "preact": "^8.2.1",
     "preact-compat": "^3.17.0",
-    "preact-router": "^2.5.5"
+    "react-emotion": "^8.0.11",
+    "react-router-dom": "^4.2.2"
   }
 }

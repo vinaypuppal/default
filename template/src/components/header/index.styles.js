@@ -1,8 +1,7 @@
-import { h } from 'preact';
 import { NavLink as Link } from 'react-router-dom';
 import styled from 'react-emotion';
 
-const Header = styled.header`
+export const Header = styled.header`
   position: fixed;
   left: 0;
   top: 0;
@@ -14,13 +13,13 @@ const Header = styled.header`
   z-index: 50;
 `;
 
-const Nav = styled.nav`
+export const Nav = styled.nav`
   float: right;
   font-size: 100%;
   color: red;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   float: left;
   margin: 0;
   padding: 0 15px;
@@ -30,7 +29,7 @@ const Title = styled.h1`
   color: #fff;
 `;
 
-const NavLink = styled(Link)`
+export const NavLink = styled(Link)`
   display: inline-block;
   height: 56px;
   line-height: 56px;
@@ -49,20 +48,3 @@ const NavLink = styled(Link)`
     background: rgba(0, 0, 0, 0.2);
   }
 `;
-
-const HeaderBar = () => (
-  <Header>
-    <Title>Preact App</Title>
-    <Nav>
-      <NavLink exact to="/">
-        Home
-      </NavLink>
-      <NavLink exact to="/profile">
-        Me
-      </NavLink>
-      <NavLink to="/profile/john">John</NavLink>
-    </Nav>
-  </Header>
-);
-
-export default HeaderBar;
